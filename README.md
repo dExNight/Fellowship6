@@ -106,3 +106,13 @@ Each previous deposit will be counted as `remainingTokens + 1*(I-i)`, where I-to
 **Vulnerability:** Unsafe `uint256 -> int256` casting. Which can be easily exploited to get positive `SwapState.positions`
 
 </details>
+
+<details>
+
+<summary><strong>Fallout</strong></summary>
+
+**Vulnerability:** Using anomalous curve (n == p) for generating key pairs, which allows to retrieve private key from public key using SSSA attack
+
+See `solution/Fallout.py`
+
+</details>

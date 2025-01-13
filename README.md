@@ -116,3 +116,19 @@ Each previous deposit will be counted as `remainingTokens + 1*(I-i)`, where I-to
 See `solution/Fallout.py`
 
 </details>
+
+<details>
+
+<summary><strong>Chef</strong></summary>
+
+**Vulnerability:** `EMERGENCY_WITHDRAW` function rewrites **withdrawedAmount** slot with **rewardDebt** value. This allows to rewrite `SUSHI_PER_BLOCK_SLOT` (=3) value (=1) with large value. Morover anyone can change any slot's value (i.e. `POOL_INFO_SLOT` also can be manipulated to change pool length and gain more profit)
+
+Step 1: Deposit **N** tokens to contract
+
+Step 2: Withdraw **N-slotNum** tokens using `WITHDRAW`
+
+Step 3: Call `EMERGENCY_WITHDRAW` that will rewrite **slotNum's** value
+
+Check `solution/Chef.huff` to see stack layout
+
+</details>

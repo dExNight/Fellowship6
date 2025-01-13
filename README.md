@@ -83,3 +83,19 @@ Step 3: Repeat
 1. Deposit of 1 wei **EthTokens** gives us 1 **collateralToken** thanks to `ProtocolMath.divUp()`
 2. `_updateSignals` uses current **EthToken** balance instead of **collateralToken** to recalculate signal. `token.balanceOf(address(this))` 
 </details>
+
+<details>
+
+<summary><strong>Bridge</strong></summary>
+
+**Vulnerability:** Bridge contract uses ERC777 token standard, which allows to execute `tokensToSend` hook on sender's contract, before tokens will be transfered. This allowas to perform reentrancy attack
+
+Step 1: Deposit 1 wei of **Token** to Bridge
+
+Step 2: Catch `tokensToSend` hook call. Perform 1 wei deposit again
+
+Step 3: Deposit all remaining tokens when neccessary
+
+Each previous deposit will be counted as `remainingTokens + 1*(I-i)`, where I-total number of deposits, i-current deposit call
+
+</details>

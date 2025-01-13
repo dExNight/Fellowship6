@@ -67,3 +67,11 @@ Step 2: Burn all shares, receive more tokens than were deposited
 Step 3: Repeat
 
 </details>
+
+<details>
+
+<summary><strong>Oracle</strong></summary>
+
+^_^
+
+</details>

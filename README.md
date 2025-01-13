@@ -75,3 +75,11 @@ Step 3: Repeat
 ^_^
 
 </details>
+
+<details>
+<summary><strong>Stablecoin</strong></summary>
+
+**Vulnerabilities:**
+1. Deposit of 1 wei **EthTokens** gives us 1 **collateralToken** thanks to `ProtocolMath.divUp()`
+2. `_updateSignals` uses current **EthToken** balance instead of **collateralToken** to recalculate signal. `token.balanceOf(address(this))` 
+</details>

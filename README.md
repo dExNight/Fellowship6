@@ -99,3 +99,10 @@ Step 3: Deposit all remaining tokens when neccessary
 Each previous deposit will be counted as `remainingTokens + 1*(I-i)`, where I-total number of deposits, i-current deposit call
 
 </details>
+
+<details>
+<summary><strong>Exchange</strong></summary>
+
+**Vulnerability:** Unsafe `uint256 -> int256` casting. Which can be easily exploited to get positive `SwapState.positions`
+
+</details>

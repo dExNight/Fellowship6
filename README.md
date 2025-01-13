@@ -51,3 +51,19 @@ Proxy contract uses predefined slot in its storage to store `_logic` address:
 **Step 4:** Borrow all TokenB using manipulated low price
 
 </details>
+
+<details>
+
+<summary><strong>Yield</strong></summary>
+
+Yield contract that stakes user's deposits in UniswapV3 pool
+
+**Vulnerability:** Contract does not immediately add user tokens to the liquidity. They remain in the inactive pool until the next rebalance. However, when user withdraws liquidity, Yield returns him `inactiveAmount * userShares/totalShares + activeAmount * userShares/totalShares`. Therefore if activeAmount is large enough, user can withdraw more than he deposited
+
+Step 1: Deposit all tokens to Yield contract
+
+Step 2: Burn all shares, receive more tokens than were deposited
+
+Step 3: Repeat
+
+</details>
